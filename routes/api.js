@@ -16,9 +16,9 @@ router.get('/user', verifyToken, showUser);
 
 // Essay routes
 router.get('/essay', verifyToken, getAllEssayPacks);
-router.get('/essay/item', verifyToken, getAllEssays);
+router.get('/essay/item/:pack_id', verifyToken, getAllEssays);
 router.get('/essay/:pack_id', verifyToken, showEssayPack);
-router.get('/essay/item/:essay_id', verifyToken, showEssay);
+router.get('/essay/item/show/:essay_id', verifyToken, showEssay);
 router.post('/essay', verifyToken, addEssayPack);
 router.post('/essay/item/:pack_id', verifyToken, addEssay);
 router.put('/essay/:pack_id', verifyToken, updateEssayPack);

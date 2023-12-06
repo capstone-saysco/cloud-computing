@@ -17,7 +17,7 @@ export const getAllEssayPacks = async(req, res) => {
             }
         );
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 }
 
@@ -38,7 +38,7 @@ export const getAllEssays = async(req, res) => {
             }
         );
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 }
 
@@ -46,20 +46,20 @@ export const getAllEssays = async(req, res) => {
 export const showEssayPack = async(req, res) => {
     try {
         const pack_id = req.params.pack_id;
-        conn.query('SELECT * FROM essay-pack WHERE id='+pack_id, 
+        connection.query('SELECT * FROM `essay-pack` WHERE id='+pack_id, 
             (err, rows, fields) => {
                 if (err) {
                     res.status(404).json({message: 'There are no essay pack with id '+pack_id});
                 } else {
                     res.status(200).json({
                         message: 'Showed essay pack data.',
-                        data: rows
+                        data: rows[0]
                     });
                 }
             }
         );
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 
 }
@@ -68,42 +68,21 @@ export const showEssayPack = async(req, res) => {
 export const showEssay = async(req, res) => {
     try {
         const essay_id = req.params.essay_id;
-        let essayData;
-        let packData;
-        connection.query('SELECT * FROM essay WHERE id='+essay_id, 
+        connection.query('SELECT * FROM `essay` WHERE id='+essay_id, 
             (err, rows, fields) => {
                 if (err) {
                     res.status(404).json({message: 'There are no essay with id '+essay_id});
                 } else {
-                    essayData = rows[0];
+                    res.status(200).json({
+                        message: 'Showed essay data.',
+                        data: rows[0]
+                    });
                 }
             }
         );
 
-        connection.query('SELECT * FROM essay-pack WHERE id='+essayData.pack_id,
-            (err, rows, fields) => {
-                if (err) {
-                    res.status(404).json({message: 'There are no essay pack with id '+essayData.pack_id});
-                } else {
-                    packData = rows[0];
-                }
-            }
-        )
-
-        res.status(200).json({
-            message: 'Showed essay data.',
-            data: {
-                id: essay_id,
-                pack_title: packData.title,
-                student_name: essayData.student_name,
-                student_number: essayData.student_number,
-                question: packData.question,
-                answer: essayData.answer,
-                score: essayData.score,
-            }
-        });
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 }
 
@@ -125,13 +104,18 @@ export const addEssayPack = async(req, res) => {
                 } else {
                     res.status(201).json({
                         message: 'Essay pack added successfully.',
-                        data: rows
+                        data: {
+                            id: rows.insertId,
+                            user_id: user_id,
+                            title: title,
+                            question: question
+                        }
                     });
                 }
             }
         );
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 }
 
@@ -155,13 +139,20 @@ export const addEssay = async(req, res) => {
                 } else {
                     res.status(201).json({
                         message: 'Essay added successfully.',
-                        data: rows
+                        data: {
+                            id: rows.insertId,
+                            pack_id: pack_id,
+                            student_name: student_name,
+                            student_number: student_number,
+                            answer: answer,
+                            score: score
+                        }
                     });
                 }
             }
         );
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 }
 
@@ -182,13 +173,17 @@ export const updateEssayPack = async(req, res) => {
                 } else {
                     res.status(200).json({
                         message: 'Essay pack updated successfully!',
-                        data: rows
+                        updated_data: {
+                            id: pack_id,
+                            title: title,
+                            question: question
+                        }
                     });
                 }
             }
         )
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 }
 
@@ -211,13 +206,19 @@ export const updateEssay = async(req, res) => {
                 } else {
                     res.status(200).json({
                         message: 'Essay updated successfully!',
-                        data: rows
+                        updated_data: {
+                            id: essay_id,
+                            student_name: student_name,
+                            student_number: student_number,
+                            answer: answer,
+                            score: score
+                        }
                     });
                 }
             }
         );
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 }
 
@@ -225,7 +226,7 @@ export const updateEssay = async(req, res) => {
 export const deleteEssayPack = async(req, res) => {
     try {
         const pack_id = req.params.pack_id;
-        conn.query("DELETE FROM `essay-pack` WHERE id="+pack_id,  
+        connection.query("DELETE FROM `essay-pack` WHERE id="+pack_id,  
             (err, rows, fields) => {
                 if (err) {
                     res.status(500).json({message: err});
@@ -237,7 +238,7 @@ export const deleteEssayPack = async(req, res) => {
             }
         );
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 }
 
@@ -245,7 +246,7 @@ export const deleteEssayPack = async(req, res) => {
 export const deleteEssay = async(req, res) => {
     try {
         const essay_id = req.params.essay_id;
-        conn.query("DELETE FROM `essay` WHERE id="+essay_id,  
+        connection.query("DELETE FROM `essay` WHERE id="+essay_id,  
             (err, rows, fields) => {
                 if (err) {
                     res.status(500).json({message: err});
@@ -257,6 +258,6 @@ export const deleteEssay = async(req, res) => {
             }
         );
     } catch (error) {
-        res.status(500).json({message: error});
+        res.status(500).json({message: 'Internal server error!'});
     }
 }
