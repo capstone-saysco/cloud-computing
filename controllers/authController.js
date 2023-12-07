@@ -91,14 +91,13 @@ export const login = async(req, res, next) => {
 
                     accessToken=jwt.sign({userId, name, email}, process.env.ACCESS_TOKEN_SECRET,{expiresIn: '1d'});
                     refreshToken=jwt.sign({userId, name, email}, process.env.REFRESH_TOKEN_SECRET,{expiresIn: '1d'});
+                    res.cookie('refreshToken', refreshToken,{
+                        httpOnly: true,
+                        maxAge: 24 * 60 * 60 * 1000
+                    });
                 }
             }
         );
-
-        res.cookie('refreshToken', refreshToken,{
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000
-        });
 
         connection.query(query2, {refresh_token: process.env.REFRESH_TOKEN_SECRET},
             (err, rows, fields) => {
@@ -118,20 +117,18 @@ export const login = async(req, res, next) => {
     }
 }
 
-// [POST] Logout from app
+// [DELETE] Logout from app
 export const logout = async(req, res) => {
     const refreshToken = req.cookies.refreshToken;
+    if(!refreshToken) return res.status(200).json({message: 'User has already been logged out.'});
     const query = 'UPDATE `user` SET ? WHERE refresh_token='+mysql.escape(refreshToken);
-
-    if(!refreshToken) return res.status(204).json({message: 'User has already been logged out.'});
-
     connection.query(query,{refresh_token: null},
         (err, rows, fields) => {
             if (err) {
-                res.status(204).json({message: 'User has already been logged out.'});
+                res.status(200).json({message: 'User has already been logged out.'});
             } else {
                 res.clearCookie('refreshToken');
-                res.status(200).json({message: 'User logged out succesfully.'})
+                res.status(200).json({message: 'User logged out successfully.'})
             }
         }
     )
