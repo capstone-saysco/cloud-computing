@@ -242,7 +242,7 @@ export const deleteEssayPack = async(req, res) => {
     }
 }
 
-// [DELETE] an essay
+// [DELETE] Delete an essay
 export const deleteEssay = async(req, res) => {
     try {
         const essay_id = req.params.essay_id;
