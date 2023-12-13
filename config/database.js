@@ -4,7 +4,7 @@ export const connection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
 	password: '',
-	database: 'saysco-db'
+	database: 'saysco_db'
 });
 connection.connect(function(error){
 	if(!!error) {

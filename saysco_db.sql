@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2023 at 07:41 AM
+-- Generation Time: Dec 13, 2023 at 04:32 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `saysco-db`
+-- Database: `saysco_db`
 --
 
 -- --------------------------------------------------------
@@ -39,10 +39,10 @@ CREATE TABLE `essay` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `essay-pack`
+-- Table structure for table `essay_pack`
 --
 
-CREATE TABLE `essay-pack` (
+CREATE TABLE `essay_pack` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
@@ -50,10 +50,10 @@ CREATE TABLE `essay-pack` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `essay-pack`
+-- Dumping data for table `essay_pack`
 --
 
-INSERT INTO `essay-pack` (`id`, `user_id`, `title`, `question`) VALUES
+INSERT INTO `essay_pack` (`id`, `user_id`, `title`, `question`) VALUES
 (2, 5, 'The Pack that Used to Give Example', 'That long essay question.');
 
 -- --------------------------------------------------------
@@ -90,9 +90,9 @@ ALTER TABLE `essay`
   ADD KEY `pack_id` (`pack_id`);
 
 --
--- Indexes for table `essay-pack`
+-- Indexes for table `essay_pack`
 --
-ALTER TABLE `essay-pack`
+ALTER TABLE `essay_pack`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
@@ -113,9 +113,9 @@ ALTER TABLE `essay`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `essay-pack`
+-- AUTO_INCREMENT for table `essay_pack`
 --
-ALTER TABLE `essay-pack`
+ALTER TABLE `essay_pack`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
@@ -132,12 +132,12 @@ ALTER TABLE `user`
 -- Constraints for table `essay`
 --
 ALTER TABLE `essay`
-  ADD CONSTRAINT `pack_id` FOREIGN KEY (`pack_id`) REFERENCES `essay-pack` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `pack_id` FOREIGN KEY (`pack_id`) REFERENCES `essay_pack` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `essay-pack`
+-- Constraints for table `essay_pack`
 --
-ALTER TABLE `essay-pack`
+ALTER TABLE `essay_pack`
   ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 COMMIT;
 

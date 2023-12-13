@@ -4,7 +4,7 @@ import { connection } from "../config/database.js";
 export const getAllEssayPacks = async(req, res) => {
     try {
         const user_id = res.locals.user_id;
-        connection.query('SELECT * FROM `essay-pack` WHERE user_id='+user_id,
+        connection.query('SELECT * FROM `essay_pack` WHERE user_id='+user_id,
             (err, rows, fields) => {
                 if (err) {
                     res.status(404).json({message: 'This user has not created an essay pack.'});
@@ -46,7 +46,7 @@ export const getAllEssays = async(req, res) => {
 export const showEssayPack = async(req, res) => {
     try {
         const pack_id = req.params.pack_id;
-        connection.query('SELECT * FROM `essay-pack` WHERE id='+pack_id, 
+        connection.query('SELECT * FROM `essay_pack` WHERE id='+pack_id, 
             (err, rows, fields) => {
                 if (err) {
                     res.status(404).json({message: 'There are no essay pack with id '+pack_id});
@@ -97,7 +97,7 @@ export const addEssayPack = async(req, res) => {
             question: question
         }
 
-        connection.query('INSERT INTO `essay-pack` SET ?', addData,
+        connection.query('INSERT INTO `essay_pack` SET ?', addData,
             (err, rows, fields) => {
                 if (err) {
                     res.status(500).json({message: err});
@@ -166,7 +166,7 @@ export const updateEssayPack = async(req, res) => {
             question: question
         }
 
-        connection.query('UPDATE `essay-pack` SET ? WHERE id='+pack_id, updateData,
+        connection.query('UPDATE `essay_pack` SET ? WHERE id='+pack_id, updateData,
             (err, rows, fields) => {
                 if (err) {
                     res.status(500).json({message: err});
@@ -226,7 +226,7 @@ export const updateEssay = async(req, res) => {
 export const deleteEssayPack = async(req, res) => {
     try {
         const pack_id = req.params.pack_id;
-        connection.query("DELETE FROM `essay-pack` WHERE id="+pack_id,  
+        connection.query("DELETE FROM `essay_pack` WHERE id="+pack_id,  
             (err, rows, fields) => {
                 if (err) {
                     res.status(500).json({message: err});
